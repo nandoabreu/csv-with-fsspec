@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "csv-with-fsspec"
+version = "0.1.0"
+description = "Load CSV, transform using Pandas, store via fsspec"
+authors = ["Fernando Abreu <49952773+nandoabreu@users.noreply.github.com>"]
+license = "MIT License"
+readme = "README.md"
+packages = [{ include = "src" }]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+tomli = { version = "^2.0.2", python = "<3.11" }
+python-decouple = "^3.8"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.3.3"
+pytest-cov = "^5.0.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
