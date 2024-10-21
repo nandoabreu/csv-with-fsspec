@@ -7,9 +7,11 @@ from .config import (
     LOG_ROTATION_MAX_MB,
     APP_NAME,
     APP_VERSION,
-    # SOURCE_XML_URL,
+    SOURCE_XML_URL,
+    DOWNLOAD_LINK_INDEX,
 )
 from .Logger import Logger
+from .Extractor import Extractor
 
 
 def main():
@@ -24,6 +26,9 @@ def main():
     log = obj.logger
 
     log.info('{s}- Start {a} v{v} {s}-'.format(s='-*' * 5, a=APP_NAME, v=APP_VERSION))
+
+    extractor = Extractor()
+    extractor.fetch_package_url(source_xml_url=SOURCE_XML_URL, link_index=DOWNLOAD_LINK_INDEX)
 
 
 if __name__ == '__main__':

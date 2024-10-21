@@ -32,3 +32,4 @@ SRC_BASE_DIR: Path = Path(__file__).resolve().parent.parent
 PROJECT_ROOT_DIR: Path = SRC_BASE_DIR.parent
 
 SOURCE_XML_URL: str = config('SOURCE_XML_URL')
+DOWNLOAD_LINK_INDEX: int = config('DOWNLOAD_LINK_INDEX', default=1, cast=int)
