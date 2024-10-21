@@ -37,7 +37,7 @@ test-unit-coverage:
 	@PYTHONPATH=${SRC_DIR} poetry run python -m pytest tests/ --cov --cov-branch --cov-report term-missing
 
 run:
-	echo TBD
+	@PYTHONPATH=${SRC_DIR} poetry run python -m app
 
 
 distro:
