@@ -7,7 +7,7 @@ PROJECT_DIR := $(shell realpath .)
 VIRTUAL_ENV ?= $(shell poetry env info -p 2>/dev/null || find . -type d -name '*venv' -exec realpath {} \;)
 PYTHON_VERSION := $(shell cat .python-version 2>/dev/null || python3 -V | sed "s,.* \(3\.[0-9]\+\)\..*,\1,")
 
-DISTRO_DIR ?= build
+DISTRO_DIR ?= distro
 
 ifneq ($(shell echo "${MAKECMDGOALS}" | grep -q -E '^(env-setup|distro)$$' && echo noenv || echo isdev), noenv)
 $(shell eval run=dev python setup/dotenv-from-toml.py > .env)
