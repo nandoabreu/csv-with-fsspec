@@ -12,6 +12,7 @@ python = "^3.11"
 tomli = { version = "^2.0.2", python = "<3.11" }
 python-decouple = "^3.8"
 pathlib = "^1.0.1"
+fsspec = "^2024.10.0"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.3.3"
