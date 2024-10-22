@@ -3,8 +3,9 @@
 Description
 """
 import requests
-import xml.etree.ElementTree as ET
+
 from itertools import islice
+from lxml.etree import fromstring
 
 
 class Extractor:
@@ -26,7 +27,7 @@ class Extractor:
         res = requests.get(source_xml_url)
         res.raise_for_status()
 
-        root = ET.fromstring(res.content)
+        root = fromstring(res.content)
         url = next(islice(root.findall(".//str[@name='download_link']"), link_index, link_index + 1)).text
 
         return url
