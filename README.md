@@ -14,3 +14,8 @@ its content using Pandas and other Python dependencies.
 ```shell
 make env-setup
 ```
+
+
+## todo's
+
+- [ ] Unit test Extractor.parse_package_content
