@@ -19,6 +19,7 @@ def source_xml_content_request_mock_obj(source_xml_path_var) -> str:
 
     return mock
 
+
 @pytest.fixture(scope='module')
 def extractor_object():
     return Extractor()
