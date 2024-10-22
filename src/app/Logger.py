@@ -35,7 +35,7 @@ class Logger(metaclass=Singleton):
             self,
             name: str = 'project', log_level: str = 'INFO', logs_dir: Path = f'/{gettempdir()}/project',
             rotated_files: int = 9, rotation_mb: float = 9,
-            cid: str = None,
+            cid: str = None, enable_stdout_logs: bool = True,
     ):
         name = name.replace(' ', '-').lower()
 
@@ -53,8 +53,9 @@ class Logger(metaclass=Singleton):
         fh.namer = self._namer
         _logger.addHandler(fh)
 
-        sh = StreamHandler()
-        _logger.addHandler(sh)
+        if enable_stdout_logs:
+            sh = StreamHandler()
+            _logger.addHandler(sh)
 
         self._logger = None
         self.logger = _logger
@@ -62,12 +63,14 @@ class Logger(metaclass=Singleton):
         self._level = None
         self.level = log_level
 
-        log_int = logging.getLevelName(self.level)
-        self.logger.log(
-            log_int + 10, 'Logs{} will be stored in UTC timezone at {}'.format(
-                f' for cid #{cid}' if cid else '', log_filepath,
-            ),
-        )
+        if enable_stdout_logs:
+            log_int = logging.getLevelName(self.level)
+            self.logger.log(
+                log_int + 10, 'Logs{} will be stored in UTC timezone at {}'.format(
+                    f' for cid #{cid}' if cid else '', log_filepath,
+                ),
+            )
+
         self.logger.log(10, 'I will rotate {} log files, at {} bytes'.format(rotated_files, rotation_bytes))
 
     @property

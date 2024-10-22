@@ -7,6 +7,7 @@ from .config import (
     LOG_LEVEL,
     LOG_MAX_ROTATED_FILES,
     LOG_ROTATION_MAX_MB,
+    ENABLE_STDOUT_LOG,
     APP_NAME,
     APP_VERSION,
     SOURCE_XML_URL,
@@ -24,6 +25,7 @@ def main():
         log_level=LOG_LEVEL,
         rotated_files=LOG_MAX_ROTATED_FILES,
         rotation_mb=LOG_ROTATION_MAX_MB,
+        enable_stdout_logs=ENABLE_STDOUT_LOG,
     )
     log = obj.logger
     log.info('{s}- Start {a} v{v} {s}-'.format(s='-*' * 5, a=APP_NAME, v=APP_VERSION))

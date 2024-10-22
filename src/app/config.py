@@ -17,6 +17,7 @@ from pathlib import Path
 from tempfile import gettempdir
 
 LOG_LEVEL: str = config('LOG_LEVEL', default='INFO')
+ENABLE_STDOUT_LOG: bool = config('ENABLE_STDOUT_LOG', cast=bool, default=True)
 
 APP_NAME: str = config('APP_NAME', default='App Name')
 APP_VERSION: str = config('APP_VERSION', default='0.1.0')
@@ -32,4 +33,4 @@ SRC_BASE_DIR: Path = Path(__file__).resolve().parent.parent
 PROJECT_ROOT_DIR: Path = SRC_BASE_DIR.parent
 
 SOURCE_XML_URL: str = config('SOURCE_XML_URL')
-DOWNLOAD_LINK_INDEX: int = config('DOWNLOAD_LINK_INDEX', default=1, cast=int)
+DOWNLOAD_LINK_INDEX: int = config('DOWNLOAD_LINK_INDEX', cast=int, default=1)
