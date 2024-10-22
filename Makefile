@@ -47,6 +47,9 @@ distro:
 test-repl:
 	PYTHONPATH=${SRC_DIR} poetry run python
 
+test-http-sample-files:
+	@python3 -m http.server 8888 --directory tests/samples
+
 
 toss-src-cache:
 	@find . -type d -name .pytest_cache | xargs rm -rf
