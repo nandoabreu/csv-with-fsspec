@@ -1,6 +1,6 @@
-"""My Python module
+"""Extractor
 
-Description
+This module holds the Extractor for the application's data
 """
 import requests
 
@@ -13,12 +13,15 @@ class Extractor:
         ...
 
     @staticmethod
-    def fetch_package_url(source_xml_url: str = None, link_index: int = 1):
+    def fetch_package_url(source_xml_url: str = None, link_index: int = 1) -> str:
         """Fetch the URL for the source ZIP file
 
         Args:
             source_xml_url (str): URL to the XML containing the required data
             link_index (int): Position in the XML data (structure: <result><doc><str name="download_link"/>...)
+
+        Returns:
+            (str): Having the fetched URL
 
         Raises:
             requests.exception.ConnectionError: For errors while resolving the URL domain
