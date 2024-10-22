@@ -15,6 +15,7 @@ from .config import (
 )
 from .Logger import Logger
 from .Extractor import Extractor
+from .Transformer import Transformer
 
 
 def main():
@@ -42,6 +43,7 @@ def main():
     log.debug(f'Parse data from {package_url=}')
     df = extractor.parse_package_content(package_url=package_url)
     log.info(f'Parsed {len(df)} data record(s)')
+    Transformer().create_derived_columns(df)
 
 
 if __name__ == '__main__':
