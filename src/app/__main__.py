@@ -1,4 +1,6 @@
 """Application main file"""
+from requests.exceptions import ConnectionError, HTTPError
+
 from .config import (
     PROJECT_NAME,
     LOGS_DIR,
@@ -28,7 +30,14 @@ def main():
     log.info('{s}- Start {a} v{v} {s}-'.format(s='-*' * 5, a=APP_NAME, v=APP_VERSION))
 
     extractor = Extractor()
-    extractor.fetch_package_url(source_xml_url=SOURCE_XML_URL, link_index=DOWNLOAD_LINK_INDEX)
+
+    try:
+        package_url = extractor.fetch_package_url(source_xml_url=SOURCE_XML_URL, link_index=DOWNLOAD_LINK_INDEX)
+        log.debug(f'Fetched: {package_url=}')
+
+    except (ConnectionError, HTTPError) as e:
+        log.error('Could not fetch file - Update the SOURCE_XML_URL var in env.toml and/or .env. See logs for details.')
+        log.debug(e)
 
 
 if __name__ == '__main__':
