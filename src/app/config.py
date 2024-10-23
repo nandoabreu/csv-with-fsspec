@@ -34,3 +34,5 @@ PROJECT_ROOT_DIR: Path = SRC_BASE_DIR.parent
 
 SOURCE_XML_URL: str = config('SOURCE_XML_URL')
 DOWNLOAD_LINK_INDEX: int = config('DOWNLOAD_LINK_INDEX', cast=int, default=1)
+
+STORAGE_LOCAL_DIR: str = config('STORAGE_LOCAL_DIR')
