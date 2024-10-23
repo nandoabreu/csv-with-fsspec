@@ -16,6 +16,9 @@ from .config import (
     STORAGE_LOCAL_DIR,
     STORAGE_AZURE_CONNECTION_STRING_FILEPATH,
     STORAGE_AZURE_CONTAINER_NAME,
+    STORAGE_AWS_SECRET_FILEPATH,
+    STORAGE_AWS_KEY_STRING,
+    STORAGE_AWS_BUCKET_NAME,
 )
 from .Logger import Logger
 from .Extractor import Extractor
@@ -55,6 +58,9 @@ def main():
         local_dir=STORAGE_LOCAL_DIR,
         azure_conn_string_file=STORAGE_AZURE_CONNECTION_STRING_FILEPATH,
         azure_container=STORAGE_AZURE_CONTAINER_NAME,
+        aws_secret_file=STORAGE_AWS_SECRET_FILEPATH,
+        aws_key=STORAGE_AWS_KEY_STRING,
+        aws_bucket=STORAGE_AWS_BUCKET_NAME,
     )
 
     has_valid_storage = False
@@ -65,6 +71,7 @@ def main():
             continue
 
         has_valid_storage = True
+        log.debug(f'Storage enabled: {storage_ref}')
 
     if not has_valid_storage:
         log.error('No storage enabled')
@@ -73,6 +80,9 @@ def main():
     filename = 'data.{}Z.csv'.format(_dt.utcnow().strftime('%Y%m%d-%H%M'))
     log.info(f'Request storage as file: {filename}')
     errors = storage.store_csv(df=df, file_name=filename)
+
+    if not errors:
+        log.info(f'File stored: {filename}')
 
     for storage_ref, error in errors.items():
         log.error(f'Unable to store in {storage_ref!r}: {error}')
