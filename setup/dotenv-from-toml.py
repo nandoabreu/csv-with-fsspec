@@ -101,7 +101,7 @@ def main():  # noqa: D103
     for key, val in parsed.items():
         if isinstance(val, list):
             val = ",".join(val)
-        elif isinstance(val, str) and " " in val:
+        elif isinstance(val, str) and (" " in val or "&" in val):
             val = f"{val!r}"
 
         key = sub(r"\W", "", key)
