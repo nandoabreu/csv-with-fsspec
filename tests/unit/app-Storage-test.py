@@ -13,7 +13,10 @@ from app.Storage import Storage
         ({'local_dir': gettempdir()}, [True], [None]),
         ({'local_dir': f'{mkdtemp()}/pytest'}, [True], [None]),
         ({'local_dir': '/root'}, [False], ['could not write in directory']),
-    ],
+        ({'local_dir': None, 'azure_conn_string_file': None}, [False, False], ['directory not set', 'connection not set']),
+        ({'azure_conn_string_file': None}, [False], ['connection not set']),
+        ({'azure_container': None}, [False], ['connection not set']),
+],
 )
 def storage_object_test(attrs, expected, error):
     obj = Storage(**attrs)
