@@ -8,15 +8,6 @@ a CSV file is stored locally, or in Azure. See the [Setup](#setup) chapter
 to enable different storages.
 
 
-## Developer setup
-
-> Note: in case your system does not use make, please open the [Makefile](Makefile) and run each command
-> manually from the targets here listed.
-
-```shell
-make env-setup
-```
-
 ## Setup
 
 The [env.toml](env.toml) file must be updated to enable several settings. The basic ones are here explained:
@@ -36,6 +27,21 @@ STORAGE_AWS_BUCKET_NAME (str): Name of the bucket to store the CSV file.
 
 ENABLE_STDOUT_LOG (bool): Higher-level logs can be printed to stdout. This is ideal in case this App runs as a systemctl daemon.
 ```
+
+### Developer setup
+
+> Note: in case your system does not use make, please open the [Makefile](Makefile) and run each command
+> manually from the targets here listed.
+
+```shell
+make env-setup
+```
+
+
+## Run the App
+
+_TBD_
+
 
 ## Reports
 
