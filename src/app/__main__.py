@@ -14,6 +14,8 @@ from .config import (
     SOURCE_XML_URL,
     DOWNLOAD_LINK_INDEX,
     STORAGE_LOCAL_DIR,
+    STORAGE_AZURE_CONNECTION_STRING_FILEPATH,
+    STORAGE_AZURE_CONTAINER_NAME,
 )
 from .Logger import Logger
 from .Extractor import Extractor
@@ -51,6 +53,8 @@ def main():
 
     storage = Storage(
         local_dir=STORAGE_LOCAL_DIR,
+        azure_conn_string_file=STORAGE_AZURE_CONNECTION_STRING_FILEPATH,
+        azure_container=STORAGE_AZURE_CONTAINER_NAME,
     )
 
     has_valid_storage = False
