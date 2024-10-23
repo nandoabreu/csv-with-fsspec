@@ -34,7 +34,7 @@ test-unit:
 	PYTHONPATH=${SRC_DIR} poetry run python -m pytest tests/unit --exitfirst --verbose  # --capture=no
 
 test-unit-coverage:
-	@PYTHONPATH=${SRC_DIR} poetry run python -m pytest tests/ --cov --cov-branch --cov-report term-missing
+	@PYTHONPATH=${SRC_DIR} poetry run python -m pytest tests/ --cov=src --cov-branch --cov-report term-missing
 
 run:
 	@PYTHONPATH=${SRC_DIR} poetry run python -m app
