@@ -4,7 +4,6 @@ from pandas.core.frame import DataFrame
 
 from app.Transformer import Transformer
 
-
 data_test = [
     # Syntax: (str, int (number of "a"s in str))
     ('Lorem ipsum dolor', 0),

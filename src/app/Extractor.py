@@ -1,4 +1,4 @@
-"""Extractor
+"""Extractor module
 
 This module holds the Extractor for the application's data
 """
