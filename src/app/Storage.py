@@ -9,28 +9,47 @@ from pandas.core.frame import DataFrame
 
 
 class Storage:
-    def __init__(self, local_dir: str = None, azure_conn_string_file: str = None, azure_container: str = None):
+    def __init__(
+            self,
+            local_dir: str = None,
+            azure_conn_string_file: str = None,
+            azure_container: str = None,
+            aws_secret_file: str = None,
+            aws_key: str = None,
+            aws_bucket: str = None,
+    ):
         """Initialize Storage with the provided destinations
 
-        If a destination is not valid, it will be skipped. If no destination is valid,
-        an error will be raised.
-
         Args:
-            local_dir (str): Local file destination path
-            azure_conn_string_file (str): The file having the connection string to Azure Storage
-            azure_container (str): The container in the Azure Storage
+            local_dir (str, optional): Local file destination path
+            azure_conn_string_file (str, optional): The file having the connection string to Azure Storage
+            azure_container (str, optional): The container in the Azure Storage
+            aws_secret_file (str, optional): The file having the secret key to a AWS account
+            aws_key (str, optional): The key to the AWS account
+            aws_bucket (str, optional): The bucket in AWS S3
         """
         self.__status = {}
 
         self.local_dir = Path(local_dir) if local_dir else None
         self.validate_local_path()
 
-        self.azure_container = azure_container if azure_conn_string_file else None
-        self.__azure_conn_str = None
-        self.set_connection_string_from_file(filepath=azure_conn_string_file)
         self.__azure_storage = None
+        self.__azure_conn_str = None
+        self.azure_container = None
+        if all([azure_conn_string_file, azure_container]):
+            self.fetch_from_protected_file(azure_conn_string_file, reference='azure')
+            self.azure_container = azure_container
         self.validate_azure_storage()
-        # fsspec.filesystem('az', connection_string=self.connection_string
+
+        self.__aws_storage = None
+        self.__aws_key = None
+        self.__aws_secret = None
+        self.aws_bucket = None
+        if all([aws_secret_file, aws_key]):
+            self.fetch_from_protected_file(aws_secret_file, reference='aws')
+            self.__aws_key = aws_key
+            self.aws_bucket = aws_bucket
+        self.validate_aws_account()
 
     @property
     def status(self) -> dict:
@@ -67,9 +86,15 @@ class Storage:
                 df.to_csv(f, index=False)
             print(f"Data stored in Azure Blob Storage at: {file_path}")
 
+        if self.status.get('aws', {}).get('valid', False):
+            file_path = f"{self.aws_bucket}/{file_name}"
+            with self.__aws_storage.open(file_path, 'w') as f:
+                df.to_csv(f, index=False)
+            print(f"Data stored in AWS at: {file_path}")
+
         return errors
 
-    def set_connection_string_from_file(self, filepath: str):
+    def fetch_from_protected_file(self, filepath: str, reference: str):
         """TBD"""
         if not filepath:
             return
@@ -80,12 +105,19 @@ class Storage:
 
         with open(filepath) as f:
             conn_str = f.readline().strip()
-            conn_dict = dict(item.split("=", 1) for item in conn_str.split(";"))
 
+        if reference == 'azure':
+            conn_dict = dict(item.split("=", 1) for item in conn_str.split(";"))
             if len(conn_dict) < 2 or 'AccountKey' not in conn_dict:
                 return f'The data fetched from {str(filepath)!r} is not understood as an Azure connection string.'
 
             self.__azure_conn_str = conn_str
+
+        elif reference == 'aws':
+            if len(conn_str) < 10:
+                return f'The data fetched from {str(filepath)!r} is not understood as an AWS secret string.'
+
+            self.__aws_secret = conn_str
 
     def validate_local_path(self) -> None:
         """Validate a local directory set with init"""
@@ -126,7 +158,30 @@ class Storage:
             if self.azure_container not in self.__azure_storage.ls('/'):
                 status['error'] = 'container not in storage'
 
-        print(f'update {self.__status=}')
+        self.__set_status(**status)
+
+    def validate_aws_account(self) -> None:
+        """Validate AWS account data set with init"""
+        status = {'storage_ref': 'aws', 'error': None}
+
+        if not self.__aws_key:
+            status['error'] = 'key not set'
+
+        elif not self.__aws_secret:
+            status['error'] = 'secret not set'
+
+        elif not self.aws_bucket:
+            status['error'] = 'bucket not set'
+
+        else:
+            self.__aws_storage = fsspec.filesystem('s3', key=self.__aws_key, secret=self.__aws_secret)
+            try:
+                self.__aws_storage.ls(self.aws_bucket)
+            except FileNotFoundError:
+                status['error'] = 'bucket not in storage'
+            except PermissionError:
+                status['error'] = 'access denied to bucket'
+
         self.__set_status(**status)
 
     def __set_status(self, storage_ref: str, error: str = None):
