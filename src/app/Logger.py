@@ -124,11 +124,8 @@ class Logger(metaclass=Singleton):
 
         else:
             log_format = {'cid': cid, 'ts': '%(asctime)s', 'log': '%(levelname)s', 'msg': '%(message)s'}
-            if handler.level == 10:
-                log_format['ref'] = '%(pathname)s:%(lineno)d'
-
             log_format = dumps(log_format)
-            formatter = logging.Formatter(log_format)
+            formatter = logging.Formatter(f'{log_format},')
             formatter.converter = gmtime
 
         handler.setFormatter(formatter)
