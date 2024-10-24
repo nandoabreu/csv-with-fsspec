@@ -63,29 +63,17 @@ def main():
         aws_bucket=STORAGE_AWS_BUCKET_NAME,
     )
 
-    has_valid_storage = False
-    for storage_ref, status in storage.status.items():
-        if not status['valid']:
-            if status['error'] != 'value not set':
-                log.error('Storage not enabled for {!r}: {}'.format(storage_ref, status['error']))
-            continue
-
-        has_valid_storage = True
-        log.debug(f'Storage enabled: {storage_ref}')
-
-    if not has_valid_storage:
+    if not storage.file_systems:
         log.error('No storage enabled')
         return
 
     filename = 'data.{}Z.csv'.format(_dt.utcnow().strftime('%Y%m%d-%H%M'))
-    log.info(f'Request storage as file: {filename}')
-    errors = storage.store_csv(df=df, file_name=filename)
+    log.info(f'Request storage for: {filename}')
 
-    if not errors:
-        log.info(f'File stored: {filename}')
-
-    for storage_ref, error in errors.items():
-        log.error(f'Unable to store in {storage_ref!r}: {error}')
+    for fs, location in storage.file_systems:
+        file_path = '{}/{}'.format(location, filename)
+        log.info(f'Request {fs.protocol} storage')
+        storage.store_csv(df=df, fs=fs, file_path=file_path)
 
 
 if __name__ == '__main__':
