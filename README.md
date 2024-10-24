@@ -40,7 +40,14 @@ make env-setup
 
 ## Run the App
 
-_TBD_
+> Note: refer to [Setup](#setup) before running the App
+
+```shell
+make run
+```
+
+A sample output of this run can be found in
+[tests/samples/data.20241024-1537Z.csv](tests/samples/data.20241024-1537Z.csv).
 
 
 ## Reports
@@ -64,11 +71,25 @@ data/
 
 ### Logs
 
-_TBD_
-
+```
+{"cid": null, "ts": "2024-10-24 15:37:57,995", "log": "DEBUG", "msg": "RotatingFileHandler logs set to log from the DEBUG level"},
+{"cid": null, "ts": "2024-10-24 15:37:57,996", "log": "DEBUG", "msg": "StreamHandler logs set to log from the INFO level"},
+{"cid": null, "ts": "2024-10-24 15:37:57,996", "log": "INFO", "msg": "Logs will be stored in UTC timezone at /tmp/logs/csv-with-fsspec.log"},
+{"cid": null, "ts": "2024-10-24 15:37:57,996", "log": "DEBUG", "msg": "I will rotate 9 log files, at 9437184 bytes"},
+{"cid": null, "ts": "2024-10-24 15:37:57,996", "log": "INFO", "msg": "-*-*-*-*-*- Start CSV with fsspec v0.2.0 -*-*-*-*-*-"},
+{"cid": null, "ts": "2024-10-24 15:37:58,249", "log": "DEBUG", "msg": "Parse data from package_url='http://0.0.0.0:8888/data.xml.zip'"},
+{"cid": null, "ts": "2024-10-24 15:37:58,273", "log": "INFO", "msg": "Parsed 3 data record(s)"},
+{"cid": null, "ts": "2024-10-24 15:37:59,276", "log": "INFO", "msg": "Request storage for: data.20241024-1537Z.csv"},
+{"cid": null, "ts": "2024-10-24 15:37:59,276", "log": "INFO", "msg": "Request ('file', 'local') storage"},
+{"cid": null, "ts": "2024-10-24 15:37:59,280", "log": "INFO", "msg": "Request abfs storage"},
+{"cid": null, "ts": "2024-10-24 15:37:59,448", "log": "INFO", "msg": "Request ('s3', 's3a') storage"},
+```
 
 ## todo's
 
 - [ ] Unit test Extractor.parse_package_content
-- [ ] Fully unit test remote Storage (mocking the connection)
+- [ ] Fully unit test FS (file system connector) (mocking the connections)
 - [ ] Find a way to cancel the Azure tests in case the connection fails (thread timeout was tried)
+- [ ] Allow Azure/AWS storage in directories inside the Container/Bucket
+- [ ] This 0.2 version need more exception handling
+- [ ] Needs better loging for each file system successful storage
