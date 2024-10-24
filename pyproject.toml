@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "csv-with-fsspec"
-version = "0.1.0"
+version = "0.2.0"
 description = "Load CSV, transform using Pandas, store via fsspec"
 authors = ["Fernando Abreu <49952773+nandoabreu@users.noreply.github.com>"]
 license = "MIT License"
