@@ -2,6 +2,7 @@
 
 This module handles transformation of data
 """
+from numpy import where
 from pandas.core.frame import DataFrame
 
 
@@ -24,4 +25,4 @@ class Transformer:
             None: The DataFrame is modified in place, so there is no need to return it
         """
         df['a_count'] = df['FullNm'].str.count('a').fillna(0)
-        df['contains_a'] = df['a_count'].apply(lambda x: 'YES' if x > 0 else 'NO')
+        df['contains_a'] = where(df['a_count'] > 0, 'YES', 'NO')
